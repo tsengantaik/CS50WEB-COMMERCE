@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>categorylist</h2>
+
+{% for item in categorylist %}
+<ul>
+    <a href="{% url 'categoryitem' item.id %}">{{item.name}}</a>
+
+</ul>
+{% endfor %}
+
+
+<!-- for categoryitem after select -->
+{% for item in categoryitem %}
+<div class="rounded border border-info" style="margin-left:0px; margin-bottom:15px;">
+    <div>
+        <div class="h-auto d-inline-block" style="width: 500px; height: 350px;">
+            <img style="width: 80%" src="{{item.image}}" class="rounded" alt="no image">
+        </div>
+        <div class="h-auto d-inline-block" style="width: 500px">
+            <h4>{{item.title}}</h4>
+            <div>Price: Twd{{item.bid}}</div>
+            <div>{{item.description}}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock %}

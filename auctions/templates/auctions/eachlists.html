@@ -1,0 +1,92 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Listings: {{thelist.title}}</h2>
+<h1 class="text-info">{{owner}} </h1>
+<div>
+    {% for a in bidwinner %}
+    {{a.bider}}
+    {% endfor%}
+    {{won}}
+</div>
+<!-- add / cancel to watchlist -->
+<div>
+    <!-- <div class="d-inline">
+        <form class="d-inline" action="{%url 'watchlist' user.id %}" method="post">
+            {% csrf_token %}
+            <input class="btn btn-primary;p-3 mb-2 bg-secondary text-white" style="margin: 5px;" type="submit"
+                value="Remove from watchlist">
+        </form>
+    </div> -->
+    <div class="d-inline">
+        <form class="d-inline" action="{%url 'watchlist' user.id%}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="itemid" value="{{thelist.id}}">
+            <input class="btn btn-primary;p-3 mb-2 bg-secondary text-white" style="margin: 5px;" type="submit"
+                value="Add to watchlist">
+        </form>
+    </div>
+
+    <!-- CLOSE ACTIVE PAGE -->
+    <div class="d-inline">
+        <form class="d-inline" action="{%url 'eachlists' thelist.id %}" method="post">
+            {% csrf_token %}
+            <input name="active" class="btn btn-primary;p-3 mb-2 bg-secondary text-white" style="margin: 5px;"
+                type="submit" value="CLOSE THE PAGE">
+        </form>
+    </div>
+    <div class="d-inline text-warning">{{noactive}} </div>
+
+</div>
+
+<!-- eachlist -->
+<div style="margin-left:0px; margin-bottom:15px;">
+    <div>
+        <div class="border border-primary" style="width: 1200px; height: 600px;">
+            <img style="width: 90%; height: 80%; margin: auto;" src="{{thelist.image}}" class="rounded" alt="no image">
+        </div>
+        <div>{{thelist.description}}</div>
+
+    </div>
+</div>
+
+<!-- bid competition -->
+<h2>TWD: {{thelist.bid}}</h2>
+<div class="text-black-50">
+    {{bidnumber}} bids so far.
+</div>
+<div>
+    <form action="{%url 'eachlists' thelist.id %}" method="post">
+        {% csrf_token %}
+        <input class="rounded-pill" type="number" name="otherbid">
+        <div style="color: brown;"> {{errorhint}}</div>
+        <input class="btn btn-primary" style="margin: 10px;" type="submit" name="addbid" value="place bid">
+    </form>
+</div>
+
+<h2>Detail</h2>
+<div>
+    <ul>
+        <li>List by:{{thelist.creater}} </li>
+        <li>Category: {{thelist.category}}</li>
+    </ul>
+</div>
+
+<!--add comment -->
+<h2>Comments</h2>
+<div>
+    <form action="{%url 'eachlists' thelist.id %}" method="post">
+        {% csrf_token %}
+        <input class="rounded-pill" type="text" name="newcomment">
+        <input class="btn btn-primary" style="margin: 10px;" name="addcomment" type="submit" value="ADD comment">
+    </form>
+</div>
+
+<div>
+    <ul>
+        {% for a in commentlist%}
+        <li>{{a.comment}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
